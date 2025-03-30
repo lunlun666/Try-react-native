@@ -23,7 +23,7 @@ function GoalInput(props) {
         value={enterGoalText}
       />
       <Button title="Add Goal" onPress={addGoalHandler} />
-    </View>
+    </View> 
   );
 }
 
