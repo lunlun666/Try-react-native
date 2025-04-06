@@ -1,5 +1,7 @@
+import { Text } from 'react-native'
+
 function GameOverScreen() {
-    return;
+    return <Text>game over123</Text>
   }
   
   export default GameOverScreen;
