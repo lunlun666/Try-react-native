@@ -7,11 +7,12 @@ import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 ("./screens/GameScreen");
 import Colors from "./constant/colors";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState("");
   const [gameOver, setGameOver] = useState(true);
-  const [roundsNumber, setRoundsNumber] = useState('');
+  const [roundsNumber, setRoundsNumber] = useState("");
 
   const [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -27,7 +28,7 @@ export default function App() {
   };
 
   const gameOverHandle = (totalGuessRounds) => {
-    setRoundsNumber(totalGuessRounds)
+    setRoundsNumber(totalGuessRounds);
     setGameOver(true);
   };
 
@@ -52,27 +53,29 @@ export default function App() {
     }
 
     return (
-      <GameScreen
-        pickedNumber={pickedNumber}
-        onGameOver={gameOverHandle}
-      />
+      <GameScreen pickedNumber={pickedNumber} onGameOver={gameOverHandle} />
     );
   };
 
   return (
-    <LinearGradient
-      colors={[Colors.primary700, Colors.accent500]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        source={require("./assets/images/background.png")}
-        resizeMode={"cover"}
+    <>
+      <StatusBar style="light"/>
+      <LinearGradient
+        colors={[Colors.primary700, Colors.accent500]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImages}
       >
-        <SafeAreaView style={styles.rootScreen}>{screenChange()}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          resizeMode={"cover"}
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImages}
+        >
+          <SafeAreaView style={styles.rootScreen}>
+            {screenChange()}
+          </SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 

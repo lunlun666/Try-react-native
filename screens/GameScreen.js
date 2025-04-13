@@ -1,5 +1,12 @@
 import { use, useState, useEffect } from "react";
-import { Text, StyleSheet, View, Alert, FlatList } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { Title } from "../components/ui/FontStyle";
 import NumberContainer from "../components/game/NumberContainer";
@@ -28,6 +35,7 @@ function GameScreen({ pickedNumber, onGameOver }) {
   const initialGuessValue = generateRandomBetween(1, 100, pickedNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuessValue);
   const [guessRounds, setGuessRounds] = useState([initialGuessValue]);
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     console.log("execute useEffect", currentGuess);
@@ -65,9 +73,11 @@ function GameScreen({ pickedNumber, onGameOver }) {
 
   const guessRoundsLength = guessRounds.length;
 
-  return (
-    <View style={styles.screens}>
-      <Title>Opponent's guess</Title>
+  const marginTopDistance = width > 450 ? 30 : 100;
+
+  let content = (
+    <>
+      <Title>Opponent's guess 1</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>
@@ -86,6 +96,33 @@ function GameScreen({ pickedNumber, onGameOver }) {
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if (width > 450) {
+    content = (
+      <View>
+        <Title>Opponent's guess 2</Title>
+        <View style={styles.horizontalDevice}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => generateNewNumber("lower")}>
+              <MaterialIcons name={"remove"} size={"24"} />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={generateNewNumber.bind(this, "higher")}>
+              <MaterialIcons name={"add"} size={"24"} />
+            </PrimaryButton>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[styles.screens, {marginTop: marginTopDistance}]}>
+      {content}
       <View style={styles.logContainer}>
         <FlatList
           data={guessRounds}
@@ -111,7 +148,8 @@ const styles = StyleSheet.create({
   screens: {
     flex: 1,
     padding: 12,
-    marginTop: 100,
+    // marginTop: 100,
+    alignItems: "center",
   },
   instructionText: {
     marginBottom: 12,
@@ -121,6 +159,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+  },
+  horizontalDevice: {
+    flexDirection: 'row',
+    alignItems: "center",
   },
   logContainer: {
     flex: 1,
