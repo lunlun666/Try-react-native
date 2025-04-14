@@ -134,7 +134,7 @@ function GameScreen({ pickedNumber, onGameOver }) {
               />
             );
           }}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.item}
         />
         {/* {guessRounds.map((guessNumber) => <Text key={guessNumber}>{guessNumber}</Text>)} */}
       </View>
